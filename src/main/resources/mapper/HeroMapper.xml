@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yangchaobao.mapper.HeroMapper">
+	<select id="queryAll" parameterType="map" resultType="com.yangchaobao.bean.Hero">
+		select * from hero h,camp c where h.cid=c.cid
+		<if test="cid!=null and cid!=''">
+			and c.cid=#{cid}
+		</if>
+		<if test="status!=null and status!=''">
+			and h.status=#{status}
+		</if>
+		<if test="min!=null and min!=''">
+			and h.price>=#{min}
+		</if>
+		<if test="max!=null and max!=''">
+			and h.price&lt;=#{max}
+		</if>
+	</select>
+	<select id="queryCamp" resultType="com.yangchaobao.bean.Camp">
+		select * from camp
+	</select>
+	<update id="updateHero" parameterType="int">
+		update hero
+		<set>
+			<if test="hname!=null">
+				hname=#{hname}
+			</if>
+			<if test="price!=null">
+				price=#{price}
+			</if>
+			<if test="status!=null">
+				status=#{status}
+			</if>
+			<if test="uptime!=null">
+				uptime=#{uptime}
+			</if>
+			<if test="cid!=null">
+				cid=#{cid}
+			</if>
+		</set>
+		<where>
+			hid=#{hid}
+		</where>
+
+	</update>
+	<select id="queryOne" parameterType="int" resultType="com.yangchaobao.bean.Hero">
+		select *
+		from hero h,camp c where h.cid=c.cid and h.hid=#{hid}
+	</select>
+	<insert id="add" parameterType="com.yangchaobao.bean.Hero">
+		insert into hero
+		values(null,#{hname},#{price},#{status},#{uptime},#{cid})
+	</insert>
+</mapper>
